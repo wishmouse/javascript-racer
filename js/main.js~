@@ -1,24 +1,32 @@
+
+
 $(document).ready(function(){
+var leftKey = 37;
+var rightKey = 39;
+var upKey = 38;
+var downKey = 40;
+
 
 var playerOne = 0; //P
 var playerTwo = 0; // Q
-var trackLength = 0;
+var trackLength = 0; //defined below
+
   
 //players and tracks from dropdown
 
 function setTrackLength(){
       
-    trackLength = prompt("How far do you want to go? Enter a distance between 10 and 30");
-       if (trackLength < 5){
-      trackLength = 5;
+    trackLength = prompt("How far do you want to go? Enter a distance between 50 and 100");
+       if (trackLength < 10){
+      trackLength = 10;
     } else if 
-          (trackLength > 30){
-          trackLength = 30;
+          (trackLength > 100){
+          trackLength = 100;
         };
           
   for (i = 1; i <= trackLength; i++){
   $("#playerOne_strip").append("<td>");
-  $("#playerTwo_strip").append("<td>");
+  //$("#playerTwo_strip").append("<td>");
     
     };
   
@@ -34,25 +42,33 @@ function startGame(){
   
   $("td").removeClass("active");
   $("#playerOne_strip > td:first").addClass( "active" ); 
-  $("#playerTwo_strip > td:first").addClass( "active" );
+  //$("#playerTwo_strip > td:first").addClass( "active" );
 
   
- $(document).on('keyup',function(e) {//add keyup eventListener (keyup)
+ $(document).on('keydown',function(e) {//add keydown eventListener (keydown)
      
-  if(e.keyCode===80) {
+  if(e.keyCode===39) { //right arrow
     if(playerOne < trackLength){
       movePlayer ('playerOne_strip');
       playerOne++;
-    }
-    else        {
-        alert("Player 1 wins");
+    
+    }  else        {
+        alert("Game Over");
         gameOver();
       } 
+  };
+
+  if(e.keyCode===37) {
+    if(playerOne < trackLength){
+      reversPlayer ('playerOne_strip');
+      playerOne--;
+    
+    }  
   };
    //end of playerOne, P, 80
 
     
-  if(e.keyCode===81){
+  /*if(e.keyCode===81){
     if (playerTwo < trackLength){
      movePlayer ('playerTwo_strip');
       playerTwo++;
@@ -62,17 +78,27 @@ function startGame(){
         gameOver();
       }
  };// end of playerTwo, Q, 81
-   
+   */
            
-   }); // close keyup eventListener (keyup)
+   }); // close keydown eventListener (keydown)
     
-  };// close startGame function
+  };
+
+var speed = setInterval
 
 startGame();
   
   movePlayer = function(player) {
     var activeCell = $("#" + player + " td.active");
     var moveCell = activeCell.next();
+
+    activeCell.removeClass("active");
+    moveCell.addClass("active");
+  }; //close 'updatePlayer function'
+
+  reversePlayer = function(player){
+    var activeCell = $("#" + player + " td.active");
+    var moveCell = activeCell.prev();
 
     activeCell.removeClass("active");
     moveCell.addClass("active");
